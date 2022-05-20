@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <NoWarn>CA1822;CA2208</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ServiceStack" Version="6.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
+    </ItemGroup>
+
+</Project>

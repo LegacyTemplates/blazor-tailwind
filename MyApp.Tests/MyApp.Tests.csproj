@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <DebugType>portable</DebugType>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyApp.Client\MyApp.Client.csproj" />
+        <ProjectReference Include="..\MyApp.ServiceInterface\MyApp.ServiceInterface.csproj" />
+        <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
+
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+        <PackageReference Include="NUnit" Version="3.*" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
+        <PackageReference Include="coverlet.collector" Version="3.*" />
+        <PackageReference Include="bunit" Version="1.4.*" />
+
+        <PackageReference Include="ServiceStack" Version="6.*" />
+        <PackageReference Include="ServiceStack.Kestrel" Version="6.*" />
+    </ItemGroup>
+
+</Project>

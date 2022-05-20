@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+    <ItemGroup>
+        <Using Include="MyApp" />
+        <Using Include="ServiceStack" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+        <PackageReference Include="ServiceStack" Version="6.*" />
+        <PackageReference Include="ServiceStack.OrmLite.Sqlite.Data" Version="6.*" />
+        <PackageReference Include="ServiceStack.Server" Version="6.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyApp.Client\MyApp.Client.csproj" />
+        <ProjectReference Include="..\MyApp.ServiceInterface\MyApp.ServiceInterface.csproj" />
+        <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <ClientDir>$(MSBuildProjectDirectory)/../MyApp.Client</ClientDir>
+        <WwwRoot>$(ClientDir)/wwwroot</WwwRoot>
+        <TestsDir>$(MSBuildProjectDirectory)/../MyApp.Tests</TestsDir>
+    </PropertyGroup>
+
+    <!-- Populated in release.yml with GitHub Actions secrets -->
+    <Target Name="DeployApi" AfterTargets="Build" Condition="$(DEPLOY_API) != ''">
+        <Exec Command="echo DEPLOY_API=$(DEPLOY_API)" />
+
+        <!-- Update Production settings with DEPLOY_API Blazor UI should use  -->
+        <WriteLinesToFile File="$(WwwRoot)/appsettings.Production.json" Lines="$([System.IO.File]::ReadAllText($(WwwRoot)/appsettings.Production.json).Replace('{DEPLOY_API}',$(DEPLOY_API)))" Overwrite="true" Encoding="UTF-8" />
+
+        <!-- 404.html SPA fallback (supported by GitHub Pages, Cloudflare & Netlify CDNs) -->
+        <Copy SourceFiles="$(WwwRoot)/index.html" DestinationFiles="$(WwwRoot)/404.html" />
+
+        <!-- define /api proxy routes (supported by Cloudflare or Netlify CDNs)  -->
+        <WriteLinesToFile File="$(WwwRoot)/_redirects" Lines="$([System.IO.File]::ReadAllText($(WwwRoot)/_redirects).Replace('{DEPLOY_API}',$(DEPLOY_API)))" Overwrite="true" Encoding="UTF-8" />
+    </Target>
+    <Target Name="DeployCdn" AfterTargets="Build" Condition="$(DEPLOY_CDN) != ''">
+        <Exec Command="echo DEPLOY_CDN=$(DEPLOY_CDN)" />
+
+        <!-- Define custom domain name that CDN should use -->
+        <Exec Condition="$(DEPLOY_CDN) != ''" Command="echo $(DEPLOY_CDN) &gt; $(WwwRoot)/CNAME" />
+    </Target>
+
+    <!-- Prerender tasks run in release.yml -->
+    <Target Name="AppTasks" AfterTargets="Build" Condition="$(APP_TASKS) != ''">
+        <CallTarget Targets="Prerender" Condition="$(APP_TASKS.Contains('prerender'))" />
+    </Target>
+    <Target Name="Prerender">
+        <Message Text="Prerender..." />
+        <Exec Command="dotnet test --filter TestCategory=prerender --logger:&quot;console;verbosity=detailed&quot;" WorkingDirectory="$(TestsDir)" />
+    </Target>
+
+</Project>
