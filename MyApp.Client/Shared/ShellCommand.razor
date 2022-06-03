@@ -30,7 +30,7 @@
     async Task copyCommand(MouseEventArgs e)
     {
         SuccessText = "copied";
-        await JsRuntime.InvokeVoidAsync("copy", elCmd);
+        await JsRuntime.InvokeVoidAsync("JS.copy", elCmd);
         await Task.Delay(3_000);
         SuccessText = string.Empty;
     }

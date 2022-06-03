@@ -1,12 +1,13 @@
 @if (IconClass != null)
 {
-    <a href=@href class=@CssUtils.ClassNames("me-3 text-gray-400 hover:text-gray-400 text-decoration-none", @class)>
-        <span class=@CssUtils.ClassNames(IconClass, "fs-6 w-5 h-5 inline-flex text-purple-800 align-text-top me-1")></span>@href.LastRightPart('/')</a>
+    <a href=@href class=@CssUtils.ClassNames("mr-3 text-gray-400 hover:text-gray-500 no-underline", @class)>
+        <span class=@CssUtils.ClassNames(IconClass, "text-base w-5 h-5 inline-flex text-purple-800 align-text-top mr-1")></span>
+        @href.LastRightPart('/')</a>
 }
 else
 {
-    <a href=@href class=@CssUtils.ClassNames("me-3 text-gray-400 hover:text-gray-400 text-decoration-none", @class)>
-        <img src=@IconSrc class="w-5 h-5 inline-flex text-purple-800 me-1">@href.LastRightPart('/')</a>
+    <a href=@href class=@CssUtils.ClassNames("mr-3 text-gray-400 hover:text-gray-500 no-underline", @class)>
+        <img src=@IconSrc class="w-5 h-5 inline-flex text-purple-800 mr-1">@href.LastRightPart('/')</a>
 }
 
 @code {
