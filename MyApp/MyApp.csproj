@@ -23,6 +23,10 @@
         <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
     </ItemGroup>
 
+    <Target Name="CreateAppDataFolderBuild" AfterTargets="AfterBuild">
+      <MakeDir Directories="$(BuildDir)App_Data" Condition="!Exists('$(BuildDir)App_Data')" />
+    </Target>
+     
     <Target Name="CreateAppDataFolder" AfterTargets="AfterPublish">
         <MakeDir Directories="$(PublishDir)App_Data" Condition="!Exists('$(PublishDir)App_Data')" />
     </Target>
