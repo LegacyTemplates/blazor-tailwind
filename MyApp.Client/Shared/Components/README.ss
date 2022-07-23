@@ -1,7 +1,7 @@
 ﻿{{*
 
 ServiceStack.Blazor Components are easily customizable by modifying a local copy their *.razor UI markup that can be copied from:
-https://github.com/ServiceStack/ServiceStack/tree/master/src/ServiceStack.Blazor/Components/Bootstrap
+https://github.com/ServiceStack/ServiceStack/tree/master/src/ServiceStack.Blazor/Components/Tailwind
 
 This README is executable, to copy all ServiceStack.Blazor Tailwind components into this folder, run:
 
