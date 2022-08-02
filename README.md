@@ -1,5 +1,5 @@
 
-# .NET 6.0 Blazor WASM Bootstrap Template
+# .NET 6.0 Blazor WASM Tailwind Template
 
 [![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/blazor-tailwind.png)](https://blazor-tailwind.jamstacks.net)
 
