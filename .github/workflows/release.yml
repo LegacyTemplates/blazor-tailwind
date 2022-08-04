@@ -1,6 +1,7 @@
 name: Release
 permissions:
   packages: write
+  contents: write
 on:
   # Triggered on new GitHub Release
   release:
