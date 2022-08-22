@@ -63,7 +63,7 @@
     </Target>
     <Target Name="Prerender">
         <Message Text="Prerender..." />
-        <Exec Command="dotnet test --filter TestCategory=prerender --logger:&quot;console;verbosity=detailed&quot;" WorkingDirectory="$(TestsDir)" />
+        <Exec Command="dotnet test --filter FullyQualifiedName=MyApp.Tests.PrerenderTasks --logger:&quot;console;verbosity=detailed&quot;" WorkingDirectory="$(TestsDir)" />
     </Target>
 
 </Project>
