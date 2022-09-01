@@ -9,6 +9,7 @@
 .idea
 .history/
 *.db
+*.sqlite
 .vs/
 
 # User-specific files
