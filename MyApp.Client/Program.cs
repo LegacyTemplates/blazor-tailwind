@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Blazor.Extensions.Logging;
 using ServiceStack.Blazor;
+using MyApp;
 using MyApp.Client;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -23,8 +24,20 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServiceStackStateProvider>());
 
-builder.Services.AddBlazorApiClient(builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress);
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress;
+builder.Services.AddBlazorApiClient(apiBaseUrl);
 
 builder.Services.AddScoped<ServiceStackStateProvider>();
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+BlazorConfig.Set(new BlazorConfig
+{
+    IsWasm = true,
+    Services = app.Services,
+    FallbackAssetsBasePath = apiBaseUrl,
+    EnableLogging = true,
+    EnableVerboseLogging = builder.HostEnvironment.IsDevelopment(),
+});
+
+await app.RunAsync();
