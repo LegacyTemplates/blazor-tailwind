@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MyApp.Client\MyApp.Client.csproj" />
+        <ProjectReference Include="..\MyApp\MyApp.csproj" />
         <ProjectReference Include="..\MyApp.ServiceInterface\MyApp.ServiceInterface.csproj" />
         <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
 
