@@ -1,21 +1,70 @@
 ﻿/* DOM functions used in Blazor Components */
 JS = (function () {
-
+    function map(o, f) { return o == null ? null : f(o) }
     let dotnetRefs = []
     let NavKeys = 'Escape,ArrowLeft,ArrowRight,ArrowUp,ArrowDown,Home,End'.split(',')
     let InputTags = 'INPUT,SELECT,TEXTAREA'.split(',')
+    let isInput = e => e && InputTags.indexOf(e.tagName) !== -1
     let onKeyNav = e => {
         let hasModifierKey = e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || e.code === 'MetaLeft' || e.code === 'MetaRight'
-        if (hasModifierKey || (e.target && InputTags.indexOf(e.target.tagName) >= 0)) return
+        if (hasModifierKey || isInput(e.target)) return
         if (NavKeys.indexOf(e.key) == -1) return
         e.preventDefault()
+        e.stopPropagation()
         dotnetRefs.forEach(dotnetRef => {
             dotnetRef.invokeMethodAsync('OnKeyNav', e.key)
         })
     }
-    let el = sel => typeof sel == "string" ? document.querySelector(sel) : sel
+    let SelectorAliases = { document }
+    let el = sel => typeof sel == "string"
+        ? SelectorAliases[sel] || document.querySelector(sel)
+        : sel
+
+    let origScrollTo = null
+    let skipAutoScroll = true
+
+    function elVisible(el, container) {
+        if (!el) return false
+        container = container || el.parentElement || document.body
+        const { top, bottom, height } = el.getBoundingClientRect()
+        const holderRect = container.getBoundingClientRect()
+        return top <= holderRect.top
+            ? holderRect.top - top <= height
+            : bottom - holderRect.bottom <= height
+    }
+    function matchesTest(t, sel) {
+        let not = t.startsWith('!')
+        if (not) t = t.substring(1)
+        let ret = t === 'input'
+            ? map(el(sel), isInput) | map(document.activeElement, isInput)
+            : t === 'visible'
+                ? elVisible(el(sel))
+                : t === 'scrollIntoViewIfNeeded'
+                    ? !!document.body.scrollIntoViewIfNeeded
+                    : false
+        return not ? !ret : ret
+    }
+    function useFn(fnName, args) {
+        if (fnName === 'scrollIntoView' && args && args.scrollMode == 'if-needed' && document.body.scrollIntoViewIfNeeded)
+            return 'scrollIntoViewIfNeeded'
+        return fnName
+    }
+    function setCookie({ name, value, path, expires }) {
+        let expiryStr = expires ? `;expires=${expires}` : ''
+        let pathStr = path ? `;path=${path}` : ''
+        document.cookie = name + '=' + value + pathStr + expiryStr
+    }
+    function getCookie(name) {
+        var kvp = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)')
+        return kvp ? kvp[2] : null
+    }
+    function deleteCookie(name) {
+        setCookie({ name, value: getCookie(name), expires: new Date(0).toUTCString() })
+    }
+
 
     return {
+        SelectorAliases,
         get(name) { return window[name] },
         /* Loading */
         prerenderedPage() {
@@ -27,14 +76,48 @@ JS = (function () {
             if (typeof f == 'function') {
                 let ret = f.apply(target, args || [])
                 return ret
+            } else {   
+                if (args !== undefined)
+                    target[fnName] = args
+                return target[fnName]
             }
             return f
         },
+        invokeDelay(target, fnName, args, ms) {
+            setTimeout(() => JS.invoke(target, fnName, args), isNaN(ms) ? 0 : ms)
+        },
+        elInvoke(sel, fnName, args) {
+            let $el = el(sel)
+            if ($el) {
+                fnName = useFn(fnName, args)
+                let f = $el[fnName]
+                if (typeof f == 'function') {
+                    let ret = f.apply($el, args || [])
+                    return ret
+                } else {
+                    if (args !== undefined)
+                        $el[fnName] = args
+                    return $el[fnName]
+                }
+            }
+        },
+        elInvokeDelayIf(test, sel, fnName, args) {
+            if (matchesTest(test, sel)) JS.elInvoke(sel, sel, fnName, args)
+        },
+        elInvokeDelay(sel, fnName, args, ms) {
+            setTimeout(() => JS.elInvoke(sel, fnName, args), isNaN(ms) ? 0 : ms)
+        },
+        elInvokeDelayIf(test, sel, fnName, args, ms) {
+            if (matchesTest(test, sel)) JS.elInvokeDelay(sel, fnName, args, ms)
+        },
         addClass(sel, ...classes) {
-            el(sel).classList.add(...classes)
+            map(el(sel), el => el.classList.add(...classes))
         },
         removeClass(sel, ...classes) {
-            el(sel).classList.remove(...classes)
+            map(el(sel), el => el.classList.remove(...classes))
+        },
+        containsClass(sel, cls) {
+            return map(el(sel), el => el.classList.contains(cls)) || false
         },
         registerKeyNav(dotnetRef) {
             dotnetRefs.push(dotnetRef)
@@ -46,6 +129,62 @@ JS = (function () {
             dotnetRefs = dotnetRefs.filter(x => x != dotnetRef)
             if (dotnetRefs.length == 0) {
                 document.removeEventListener('keydown', onKeyNav)
+            }
+        },
+        focusNextElement() {
+            let elActive = document.activeElement
+            let form = elActive && elActive.form
+            if (form) {
+                let sel = ':not([disabled]):not([tabindex="-1"])'
+                let els = form.querySelectorAll(`a:not([disabled]), button${sel}, input[type=text]${sel}, [tabindex]${sel}`)
+                let focusable = Array.prototype.filter.call(els,
+                    el => el.offsetWidth > 0 || el.offsetHeight > 0 || el === elActive);
+                let index = focusable.indexOf(elActive);
+                if (index > -1) {
+                    let elNext = focusable[index + 1] || focusable[0];
+                    elNext.focus();
+                }
+            }
+        },
+        enableAutoScroll() { skipAutoScroll = false },
+        disableAutoScroll() {
+            if (origScrollTo == null) {
+                origScrollTo = window.scrollTo
+                window.scrollTo = (x, y) => {
+                    if (x === 0 && y === 0 && skipAutoScroll)
+                        return
+                    return origScrollTo.apply(this, arguments)
+                }
+            }
+            skipAutoScroll = true
+        },
+        setCookie,
+        getCookie,
+        deleteCookie,
+        setCookies(cookies) {
+            if (cookies) {
+                Array.from(cookies).forEach(setCookie)
+            }
+        },
+        init(opt) {
+            if (!opt || opt.colorScheme !== false) {
+                let colorScheme = opt && typeof opt.colorScheme === 'string'
+                    ? opt.colorScheme
+                    : location.search === "?dark"
+                        ? "dark"
+                        : location.search === "?light"
+                            ? "light"
+                            : localStorage.getItem('color-scheme')
+                let darkMode = colorScheme != null
+                    ? colorScheme === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches
+                let classList = document.documentElement.classList
+                if (darkMode) {
+                    if (!classList.contains('dark'))
+                        classList.add('dark')
+                } else {
+                    classList.remove('dark')
+                }
             }
         },
     }
