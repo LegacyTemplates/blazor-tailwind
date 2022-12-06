@@ -19,9 +19,6 @@
     <ItemGroup>
       <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Content Include="wwwroot\.well-known\microsoft-identity-association.json" />
-    </ItemGroup>
 </Project>
 
 
