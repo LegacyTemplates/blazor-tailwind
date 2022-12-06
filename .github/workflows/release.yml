@@ -22,7 +22,7 @@ on:
 
 jobs:
   push_to_registry:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: ${{ github.event.workflow_run.conclusion != 'failure' }}
     steps:
       # Checkout latest or specific tag
@@ -107,7 +107,7 @@ jobs:
 
   deploy_via_ssh:
     needs: push_to_registry
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: ${{ github.event.workflow_run.conclusion != 'failure' }}
     steps:
       # Checkout latest or specific tag
