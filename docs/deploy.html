@@ -135,12 +135,8 @@ in this template enables GitHub Actions CI deployment to a dedicated server with
 <pre><code>docker-compose -f ~/nginx-proxy-compose.yml up -d
 </code></pre>
 <p>This will run an nginx reverse proxy along with a companion container that will watch for additional containers in the same docker network and attempt to initialize them with valid TLS certificates.</p>
-<h2 id="github-repository-setup">GitHub Repository setup</h2>
-<p>This template pushes the API server dockerized application to GitHub Container Repository. To do this, you will first need to <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">create a Personal Access Token</a> specifically for use by <code>release.yml</code> GitHub Actions.</p>
-<p>This token will need to have access to <code>write:packages</code> to the GitHub Package Registry, which includes the GitHub Container Registry.</p>
-<p>The first time the <code>release.yml</code> process successfully runs and creates your GitHub Container Repository for your project, you then have the option to <a href="https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-ghcrio">upgrade the workflow to use GITHUB_TOKEN</a> replacing the <code>CR_PAT</code>.</p>
 <h3 id="github-actions-secrets">GitHub Actions secrets</h3>
-<p>The <code>release.yml</code> assumes 5 secrets have been set:</p>
+<p>The <code>release.yml</code> uses the following secrets.</p>
 <table>
 <thead>
 <tr>
@@ -149,10 +145,6 @@ in this template enables GitHub Actions CI deployment to a dedicated server with
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>CR_PAT</code></td>
-<td>GitHub Personal Token with read/write access to packages</td>
-</tr>
 <tr>
 <td><code>DEPLOY_API</code></td>
 <td>Hostname used to SSH deploy .NET App to, this can either be an IP address or subdomain with A record pointing to the server</td>
@@ -187,8 +179,7 @@ in this template enables GitHub Actions CI deployment to a dedicated server with
 </tbody>
 </table>
 <p>These secrets can use the <a href="https://cli.github.com/manual/gh_secret_set">GitHub CLI</a> for ease of creation. Eg, using the GitHub CLI the following can be set.</p>
-<pre><code class="language-bash">gh secret set CR_PAT -b&quot;&lt;CR_PAT&gt;&quot;
-gh secret set DEPLOY_API -b&quot;&lt;DEPLOY_API&gt;&quot;
+<pre><code class="language-bash">gh secret set DEPLOY_API -b&quot;&lt;DEPLOY_API&gt;&quot;
 gh secret set DEPLOY_USERNAME -b&quot;&lt;DEPLOY_USERNAME&gt;&quot;
 gh secret set DEPLOY_KEY &lt; key.pem # DEPLOY_KEY
 gh secret set LETSENCRYPT_EMAIL -b&quot;&lt;LETSENCRYPT_EMAIL&gt;&quot;
