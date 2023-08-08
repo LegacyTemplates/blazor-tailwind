@@ -10,6 +10,8 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
 COPY ./ .
 RUN dotnet restore
 
+ARG DEPLOY_API
+ARG DEPLOY_CDN
 
 WORKDIR /app/MyApp.Client
 RUN npm cache clean --force
