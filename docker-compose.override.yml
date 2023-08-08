@@ -1,7 +1,11 @@
 version: "3.9"
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        DEPLOY_API: localhost:5000
+        DEPLOY_CDN: localhost:5000
     ports:
       - "5000:80"
     volumes:
