@@ -14,8 +14,7 @@ ARG DEPLOY_API
 ARG DEPLOY_CDN
 
 WORKDIR /app/MyApp.Client
-RUN npm cache clean --force
-RUN npm install && npm run ui:build
+RUN npm run ui:build
 WORKDIR /app/MyApp
 RUN dotnet publish -c release /p:DEPLOY_API=${DEPLOY_API} /p:DEPLOY_CDN=${DEPLOY_CDN} /p:APP_TASKS=prerender -o /out --no-restore
 
