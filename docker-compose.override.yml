@@ -4,12 +4,19 @@ services:
     build:
       context: .
       args:
-        DEPLOY_API: localhost:5000
-        DEPLOY_CDN: localhost:5000
+        DEPLOY_API: localhost:5001
+        DEPLOY_CDN: localhost:5001
     ports:
+      - "5001:443"
       - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
-      - app-mydb:/app/App_Data
+      - ./MyApp/App_Data:/app/App_Data
+      - ~/.aspnet/https:/https:ro
   app-migration:
     build: .
     restart: "no"
@@ -17,7 +24,4 @@ services:
       - migration
     command: --AppTasks=migrate
     volumes:
-      - app-mydb:/app/App_Data
-
-volumes:
-  app-mydb:
+      - ./MyApp/App_Data:/app/App_Data
