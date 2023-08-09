@@ -78,6 +78,25 @@ jobs:
       - name: Create env.deploy_cdn
         run: |
           echo "deploy_cdn=${{ secrets.DEPLOY_CDN }}" >> $GITHUB_ENV
+          
+      - name: Run CI Prebuild Script
+        env:
+          deploy_api: ${{ secrets.DEPLOY_API }}
+          deploy_cdn: ${{ secrets.DEPLOY_CDN }}
+        run: |
+          if [ -e ./.deploy/ci.prebuild.sh ]
+          then
+            chmod +x ./.deploy/ci.prebuild.sh
+            ./.deploy/ci.prebuild.sh
+          else
+            echo "Skipping CI prebuild"
+          fi
+
+      # Publish .NET Project, generate static content in wwwroot
+      - name: Publish dotnet project
+        working-directory: ./MyApp
+        run: |
+          dotnet publish -c Release /p:DEPLOY_API=${{ secrets.DEPLOY_API }} /p:DEPLOY_CDN=${{ secrets.DEPLOY_CDN }} /p:APP_TASKS=prerender
 
       # Deploy UI to GitHub Pages
       - name: Deploy to GitHub Pages
