@@ -1,0 +1,52 @@
+<div class="mx-auto mt-16 max-w-7xl px-4 sm:mt-24"><div class="text-center"><h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl md:text-6xl"><span class="block xl:inline">Welcome to</span>
+            <span class="block text-indigo-600 dark:text-indigo-500 xl:inline">ServiceStack.Blazor</span></h1>
+        <p class="mx-auto mt-3 max-w-md text-base text-gray-500 sm:text-lg md:mt-5 md:max-w-3xl md:text-xl">
+            Welcome to your new Blazor App, checkout links below to get started:
+        </p>
+        <div class="mx-auto mt-5 max-w-md sm:flex sm:justify-center md:mt-8"><div class="rounded-md shadow"><a href="https://blazor-gallery.servicestack.net/" class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg">
+                    Blazor Gallery
+                </a></div>
+            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3"><a href="https://docs.servicestack.net/templates-blazor-tailwind" class="flex w-full items-center justify-center rounded-md border border-transparent bg-white dark:bg-gray-800 dark:border-gray-600 px-8 py-3 text-base font-medium text-indigo-600 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 md:py-4 md:px-10 md:text-lg">
+                    Blazor Docs
+                </a></div></div></div></div>
+
+<section class="py-8 flex"><div class="mt-8 mx-auto"><h2 class="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl text-center">
+            Getting Started
+        </h2>
+        <div><div class="flex flex-col"><h4 class="py-6 text-center text-xl">Create New Project</h4>
+                <input type="text" autocomplete="off" spellcheck="false" placeholder="ProjectName" class="mb-8 sm:text-lg rounded-md shadow focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 dark:bg-gray-800" value="" blazor:oninput="1" />
+
+                <section class="w-full flex justify-center text-center"><div class="mb-2"><div class="flex justify-center text-center"><a class="archive-url hover:no-underline" href="https://account.servicestack.net/archive/NetCoreTemplates/blazor-tailwind?Name=MyApp"><div class="bg-white dark:bg-gray-800 px-4 py-4 mr-4 mb-4 rounded-lg shadow-lg text-center items-center justify-center hover:shadow-2xl dark:border-2 dark:border-pink-600 dark:hover:border-blue-600 dark:border-2 dark:border-pink-600 dark:hover:border-blue-600" style="min-width: 150px;"><div class="text-center font-extrabold flex items-center justify-center mb-2"><div class="text-4xl text-blue-400 my-3"><img src="/img/blazor.svg" class="w-14 h-14"></div></div>
+                                    <div class="text-xl font-medium text-gray-700 dark:text-gray-300">Blazor WASM</div>
+                                    <div class="flex justify-center h-8"></div>
+                                    <span class="archive-name px-4 pb-2 text-blue-600 dark:text-indigo-400">MyApp.zip</span>
+                                    <div class="count mt-1 text-gray-400 text-sm"></div></div></a></div></div>
+                    <div class="mb-2"><div class="flex justify-center text-center"><a class="archive-url hover:no-underline" href="https://account.servicestack.net/archive/NetCoreTemplates/blazor-server?Name=MyApp"><div class="bg-white dark:bg-gray-800 px-4 py-4 mr-4 mb-4 rounded-lg shadow-lg text-center items-center justify-center hover:shadow-2xl dark:border-2 dark:border-pink-600 dark:hover:border-blue-600 dark:border-2 dark:border-pink-600 dark:hover:border-blue-600" style="min-width: 150px;"><div class="text-center font-extrabold flex items-center justify-center mb-2"><div class="text-4xl text-blue-400 my-3"><img src="/img/blazor.svg" class="w-14 h-14"></div></div>
+                                    <div class="text-xl font-medium text-gray-700 dark:text-gray-300">Blazor Server</div>
+                                    <div class="flex justify-center h-8"></div>
+                                    <span class="archive-name px-4 pb-2 text-blue-600 dark:text-indigo-400">MyApp.zip</span>
+                                    <div class="count mt-1 text-gray-400 text-sm"></div></div></a></div></div></section>
+
+                <div class="py-6 text-center text-xl">
+                    Open with <a class="underline hover:text-green-600" href="https://visualstudio.microsoft.com/vs/">Visual Studio 2022</a> 
+                    or <a class="underline hover:text-green-600" href="https://www.jetbrains.com/rider/">JetBrains Rider</a></div>
+
+                <h4 class="py-6 text-center text-xl">
+                    After install run 
+                    <a href="https://docs.servicestack.net/ormlite/db-migrations" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" blazor:onclick:stopPropagation>DB Migrations</a>
+                     to create App DB
+                </h4>
+                <div class="lang relative bg-gray-700 text-gray-300 pl-5 py-3 sm:rounded flex"><div class="flex ml-2 w-full justify-between cursor-pointer" blazor:onclick="2"><label blazor:elementReference="60ab07d7-2d19-449f-85c5-7c26e0b51a99">npm run migrate</label>
+        <small class="text-xs text-gray-400 px-3 -mt-1">sh</small></div></div>
+
+                <h4 class="py-6 text-center text-xl">
+                    Run Tailwind
+                </h4>
+                <div class="lang relative bg-gray-700 text-gray-300 pl-5 py-3 sm:rounded flex"><div class="flex ml-2 w-full justify-between cursor-pointer" blazor:onclick="3"><label blazor:elementReference="0fb4877a-c3ae-48a8-bbdf-25517f45a04f">npm run ui:dev</label>
+        <small class="text-xs text-gray-400 px-3 -mt-1">sh</small></div></div>
+
+                <h4 class="py-6 text-center text-xl">
+                    Run Blazor App 
+                    <span class="text-gray-400">in /MyApp</span></h4>
+                <div class="lang relative bg-gray-700 text-gray-300 pl-5 py-3 sm:rounded flex"><div class="flex ml-2 w-full justify-between cursor-pointer" blazor:onclick="4"><label blazor:elementReference="7eefc455-74df-43d9-9619-a417e4580aca">dotnet watch</label>
+        <small class="text-xs text-gray-400 px-3 -mt-1">sh</small></div></div></div></div></div></section>
