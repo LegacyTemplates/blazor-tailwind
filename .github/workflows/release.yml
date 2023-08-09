@@ -54,25 +54,6 @@ jobs:
             echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
           fi;
 
-      - name: Run CI Prebuild Script
-        env:
-          deploy_api: ${{ secrets.DEPLOY_API }}
-          deploy_cdn: ${{ secrets.DEPLOY_CDN }}
-        run: |
-          if [ -e ./.deploy/ci.prebuild.sh ]
-          then
-            chmod +x ./.deploy/ci.prebuild.sh
-            ./.deploy/ci.prebuild.sh
-          else
-            echo "Skipping CI prebuild"
-          fi
-
-      # Publish .NET Project
-      - name: Publish dotnet project
-        working-directory: ./MyApp
-        run: | 
-          dotnet publish -c Release /p:DEPLOY_API=${{ secrets.DEPLOY_API }} /p:DEPLOY_CDN=${{ secrets.DEPLOY_CDN }} /p:APP_TASKS=prerender
-
       # Authenticate, build and push to GitHub Container Registry (ghcr.io)
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -90,6 +71,9 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.image_repository_name }}:${{ env.TAG_NAME }}
+          build-args: |
+            DEPLOY_API=${{ secrets.DEPLOY_API }}
+            DEPLOY_CDN=${{ secrets.DEPLOY_CDN }}
 
       - name: Create env.deploy_cdn
         run: |
