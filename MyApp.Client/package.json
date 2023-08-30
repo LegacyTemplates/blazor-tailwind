@@ -5,6 +5,7 @@
     "postinstall": "cd ../MyApp && dotnet run --AppTasks=migrate",
     "migrate": "cd ../MyApp && dotnet run MyApp.csproj --AppTasks=migrate",
     "revert:last": "cd ../MyApp && dotnet run --AppTasks=migrate.revert:last",
-    "revert:all": "cd ../MyApp && dotnet run --AppTasks=migrate.revert:all"
+    "revert:all": "cd ../MyApp && dotnet run --AppTasks=migrate.revert:all",
+    "rerun:last": "npm run revert:last && npm run migrate"
   }
 }
