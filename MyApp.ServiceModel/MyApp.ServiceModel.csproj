@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ServiceStack.Interfaces" Version="8.*" />
+        <PackageReference Include="ServiceStack.Interfaces" Version="6.*" />
     </ItemGroup>
 
     <ItemGroup>
