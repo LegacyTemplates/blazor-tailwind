@@ -89,11 +89,11 @@
 
     void hideAuthMenu() => ShowAuthMenu = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (NavItems.Count == 0)
-            NavItems = await JS.GetNavItemsAsync("TOP");
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     if (NavItems.Count == 0)
+    //         NavItems = await JS.GetNavItemsAsync("TOP");
+    // }
 
     protected override Task OnParametersSetAsync()
     {
