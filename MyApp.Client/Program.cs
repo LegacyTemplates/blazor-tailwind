@@ -15,8 +15,7 @@ builder.Services.AddLogging(c => c
     .AddBrowserConsole()
     .SetMinimumLevel(LogLevel.Trace)
 );
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 

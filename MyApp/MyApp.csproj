@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
         <PackageReference Include="ServiceStack" Version="8.*" />
         <PackageReference Include="ServiceStack.OrmLite.Sqlite.Data" Version="8.*" />
         <PackageReference Include="ServiceStack.Server" Version="8.*" />
