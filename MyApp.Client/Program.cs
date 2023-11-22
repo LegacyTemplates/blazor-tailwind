@@ -15,16 +15,16 @@ builder.Services.AddLogging(c => c
     .AddBrowserConsole()
     .SetMinimumLevel(LogLevel.Trace)
 );
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 
 builder.Services.AddScoped<ServiceStackStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServiceStackStateProvider>());
 
+var baseUrl = new Uri(builder.HostEnvironment.BaseAddress);
 // Use / for local or CDN resources
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseUrl });
 
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress;
 builder.Services.AddBlazorApiClient(apiBaseUrl);
@@ -43,3 +43,4 @@ BlazorConfig.Set(new BlazorConfig
 });
 
 await app.RunAsync();
+
