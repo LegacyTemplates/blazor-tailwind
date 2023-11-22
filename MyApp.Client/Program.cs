@@ -11,7 +11,36 @@ using MyApp;
 using MyApp.Client;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.Services.AddLogging(c => c
+    .AddBrowserConsole()
+    .SetMinimumLevel(LogLevel.Trace)
+);
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
 
-await builder.Build().RunAsync();
+builder.Services.AddScoped<ServiceStackStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServiceStackStateProvider>());
+
+var baseUrl = new Uri(builder.HostEnvironment.BaseAddress);
+// Use / for local or CDN resources
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseUrl });
+
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress;
+builder.Services.AddBlazorApiClient(apiBaseUrl);
+builder.Services.AddLocalStorage();
+
+
+var app = builder.Build();
+
+BlazorConfig.Set(new BlazorConfig
+{
+    IsWasm = true,
+    Services = app.Services,
+    FallbackAssetsBasePath = apiBaseUrl,
+    EnableLogging = true,
+    EnableVerboseLogging = builder.HostEnvironment.IsDevelopment(),
+});
+
+await app.RunAsync();
+
