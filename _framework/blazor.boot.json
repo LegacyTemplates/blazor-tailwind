@@ -1,7 +1,7 @@
 {
   "entryAssembly": "MyApp.Client",
   "resources": {
-    "hash": "sha256-slY2z0oRhy9zi5fg0qSVB2cFYD5d4Nze6kKmDECEKIk=",
+    "hash": "sha256-OKWx/1lCw9FsrxFJtgm+aY6ROjGEok7qgf2VBDO7qYY=",
     "runtime": {
       "dotnet.6.0.25.0ibdzzkyii.js": "sha256-1jUGCCSGH9JWhkqbHdQk8JBjBI8K/VC63En5zlypVps=",
       "dotnet.timezones.blat": "sha256-KsGUR9nqtXb3Hy6IrNlnc1HoSS+AFlsXTX9rq4oChtA=",
@@ -33,8 +33,8 @@
       "Microsoft.Extensions.Primitives.dll": "sha256-QRewYnpJ6vl8gGMXBS2gN++/sQ9hKcuv+rhy586Bbxs=",
       "Microsoft.JSInterop.dll": "sha256-aKxF+fNq4s6EZT78s4T6tzoFY1dz6kbfQV7RIxqC7YY=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-yMaD2+wIHCRAl94ZoLgMHJBpLypiH47Ux6PoATNdZI8=",
-      "MyApp.Client.dll": "sha256-fZnYgz8TShJ+kOdTd00Msaj1TiPx6S5XYJ8t8FRXrSM=",
-      "MyApp.ServiceModel.dll": "sha256-FbRUs47lZZH+tqN9x8i9u3bc2jHdsT64AdH6IOVbhdo=",
+      "MyApp.Client.dll": "sha256-rOwwNAfGTyjtJGoE4iiY6NwBTKOoKdNLP12cUNv+5vg=",
+      "MyApp.ServiceModel.dll": "sha256-uk2vOFSvMBFkfn1hYsYnVIOgQtOvtDdhxpgRdj0AxJE=",
       "ServiceStack.Blazor.dll": "sha256-K2qGbnGq5yroO3Y5x2X2DSyYon2fL2vqTF2mAMlGDtM=",
       "ServiceStack.Client.dll": "sha256-qMfLcUUQ96BXw6XYWpMxI6ujpW8Ff0+8y8ITAPGUJkE=",
       "ServiceStack.Interfaces.dll": "sha256-E7TCF4GGAI+IlAilXMFxb7+5PbOcXlZ1eZhUMv/FeRc=",
