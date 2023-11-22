@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <DebugType>portable</DebugType>
         <OutputType>Library</OutputType>
@@ -29,8 +29,8 @@
         <PackageReference Include="coverlet.collector" Version="3.*" />
         <PackageReference Include="bunit" Version="1.4.*" />
 
-        <PackageReference Include="ServiceStack" Version="6.*" />
-        <PackageReference Include="ServiceStack.Kestrel" Version="6.*" />
+        <PackageReference Include="ServiceStack" Version="8.*" />
+        <PackageReference Include="ServiceStack.Kestrel" Version="8.*" />
     </ItemGroup>
 
 </Project>
