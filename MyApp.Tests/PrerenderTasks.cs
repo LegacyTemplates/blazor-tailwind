@@ -47,12 +47,6 @@ public class PrerenderTasks
     }
 
     [Test]
-    public void PrerenderPages()
-    {
-        Render<Client.Pages.Index>();
-    }
-
-    [Test]
     public async Task PrerenderMarkdown()
     {
         var srcDir = WwrootDir.CombineWith("content").Replace('\\', '/');
