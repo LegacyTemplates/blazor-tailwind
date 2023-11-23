@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
@@ -18,7 +18,7 @@ RUN npm run ui:build
 WORKDIR /app/MyApp
 RUN dotnet publish -c release /p:DEPLOY_API=${DEPLOY_API} /p:DEPLOY_CDN=${DEPLOY_CDN} /p:APP_TASKS=prerender -o /out --no-restore
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /out .
 ENTRYPOINT ["dotnet", "MyApp.dll"]
