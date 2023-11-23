@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
-using ServiceStack;
-using MyApp;
-using MyApp.Auth;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MyApp.ServiceInterface;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
