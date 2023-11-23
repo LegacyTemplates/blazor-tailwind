@@ -25,7 +25,7 @@ who are able to provide generous free & low cost hosting options.
 
 ##  [/MyApp.Client](https://github.com/NetCoreTemplates/blazor-tailwind/tree/main/MyApp.Client)
 
-This template takes advantage of its decoupled architecture and uses [GitHub Actions to deploy](/docs/deploy) 
+This template takes advantage of its decoupled architecture and uses GitHub Actions to deploy
 a copy of its static UI generated assets and hosted on:
 
 ### GitHub Pages CDN

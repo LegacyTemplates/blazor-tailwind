@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-  <PublishProfile>DefaultContainer</PublishProfile>
         <PublishProfile>DefaultContainer</PublishProfile>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -32,42 +31,4 @@
     <Target Name="CreateAppDataFolder" AfterTargets="AfterPublish">
         <MakeDir Directories="$(PublishDir)App_Data" Condition="!Exists('$(PublishDir)App_Data')" />
     </Target>
-
-    <PropertyGroup>
-  <PublishProfile>DefaultContainer</PublishProfile>
-  <PublishProfile>DefaultContainer</PublishProfile>
-        <ClientDir>$(MSBuildProjectDirectory)/../MyApp.Client</ClientDir>
-        <WwwRoot>$(ClientDir)/wwwroot</WwwRoot>
-        <TestsDir>$(MSBuildProjectDirectory)/../MyApp.Tests</TestsDir>
-    </PropertyGroup>
-
-    <!-- Populated in release.yml with GitHub Actions secrets -->
-    <Target Name="DeployApi" AfterTargets="Build" Condition="$(DEPLOY_API) != ''">
-        <Exec Command="echo DEPLOY_API=$(DEPLOY_API)" />
-
-        <!-- Update Production settings with DEPLOY_API Blazor UI should use  -->
-        <WriteLinesToFile File="$(WwwRoot)/appsettings.Production.json" Lines="$([System.IO.File]::ReadAllText($(WwwRoot)/appsettings.Production.json).Replace('{DEPLOY_API}',$(DEPLOY_API)))" Overwrite="true" Encoding="UTF-8" />
-
-        <!-- 404.html SPA fallback (supported by GitHub Pages, Cloudflare & Netlify CDNs) -->
-<!--        <Copy SourceFiles="$(WwwRoot)/index.html" DestinationFiles="$(WwwRoot)/404.html" />-->
-
-        <!-- define /api proxy routes (supported by Cloudflare or Netlify CDNs)  -->
-        <WriteLinesToFile File="$(WwwRoot)/_redirects" Lines="$([System.IO.File]::ReadAllText($(WwwRoot)/_redirects).Replace('{DEPLOY_API}',$(DEPLOY_API)))" Overwrite="true" Encoding="UTF-8" />
-    </Target>
-    <Target Name="DeployCdn" AfterTargets="Build" Condition="$(DEPLOY_CDN) != ''">
-        <Exec Command="echo DEPLOY_CDN=$(DEPLOY_CDN)" />
-
-        <!-- Define custom domain name that CDN should use -->
-        <Exec Condition="$(DEPLOY_CDN) != ''" Command="echo $(DEPLOY_CDN) &gt; $(WwwRoot)/CNAME" />
-    </Target>
-
-    <!-- Prerender tasks run in release.yml -->
-    <Target Name="AppTasks" AfterTargets="Build" Condition="$(APP_TASKS) != ''">
-        <CallTarget Targets="Prerender" Condition="$(APP_TASKS.Contains('prerender'))" />
-    </Target>
-    <Target Name="Prerender">
-        <Message Text="Prerender..." />
-        <Exec Command="dotnet test --filter FullyQualifiedName=MyApp.Tests.PrerenderTasks --logger:&quot;console;verbosity=detailed&quot;" WorkingDirectory="$(TestsDir)" />
-    </Target>
-
 </Project>

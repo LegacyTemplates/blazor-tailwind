@@ -18,8 +18,7 @@ public class AppHost : AppHostBase, IHostingStartup
         Plugins.Add(new CorsFeature(allowedHeaders: "Content-Type,Authorization",
             allowOriginWhitelist: new[]{
             "http://localhost:5000",
-            "https://localhost:5001",
-            "https://" + Environment.GetEnvironmentVariable("DEPLOY_CDN")
+            "https://localhost:5001"
         }, allowCredentials: true));
     }
 

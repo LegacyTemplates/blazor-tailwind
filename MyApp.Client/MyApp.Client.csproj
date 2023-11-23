@@ -19,11 +19,6 @@
     <ItemGroup>
       <ProjectReference Include="..\MyApp.ServiceModel\MyApp.ServiceModel.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Content Update="wwwroot\appsettings.Production.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
 </Project>
 
 
