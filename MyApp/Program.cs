@@ -1,11 +1,30 @@
-﻿using ServiceStack;
+﻿using Microsoft.AspNetCore.DataProtection;
+using ServiceStack;
 using MyApp;
+using MyApp.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MyApp.ServiceInterface;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddRazorPages();
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/signin";
+        options.LogoutPath = "/auth/logout";
+        options.AccessDeniedPath = "/";
+    });
+
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("App_Data"));
+
 
 var app = builder.Build();
 
@@ -24,6 +43,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthorization();
+app.UseAuthentication();
 app.UseAntiforgery();
 
 app.UseServiceStack(new AppHost());
