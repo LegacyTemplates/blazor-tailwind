@@ -26,7 +26,8 @@ builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredServic
 // Use / for local or CDN resources
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress;
+var hasConfiguredDeployApi = !builder.Configuration["ApiBaseUrl"]?.Contains("{DEPLOY_API}");
+var apiBaseUrl = hasConfiguredDeployApi == true ? (builder.Configuration["ApiBaseUrl"] ?? builder.HostEnvironment.BaseAddress) : builder.HostEnvironment.BaseAddress;
 builder.Services.AddBlazorApiClient(apiBaseUrl);
 builder.Services.AddLocalStorage();
 
