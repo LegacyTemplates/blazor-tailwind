@@ -68,57 +68,6 @@ jobs:
         run: |
           dotnet publish --os linux --arch x64 -c Release -p:ContainerRepository=${{ env.image_repository_name }} -p:ContainerRegistry=ghcr.io -p:ContainerImageTags=${{ env.TAG_NAME }} -p:ContainerPort=8080
 
-      - name: Create env.deploy_cdn
-        run: |
-          echo "deploy_cdn=${{ secrets.DEPLOY_CDN }}" >> $GITHUB_ENV
-          
-      - name: Run CI Prebuild Script
-        env:
-          deploy_api: ${{ secrets.DEPLOY_API }}
-          deploy_cdn: ${{ secrets.DEPLOY_CDN }}
-        run: |
-          if [ -e ./.deploy/ci.prebuild.sh ]
-          then
-            chmod +x ./.deploy/ci.prebuild.sh
-            ./.deploy/ci.prebuild.sh
-          else
-            echo "Skipping CI prebuild"
-          fi
-
-      # Setup node.js
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-      
-      # Install npm packages
-      - name: Install NPM packages
-        working-directory: ./MyApp
-        run: npm install
-        
-      # Run NPM ui:build
-      - name: Run NPM ui:build
-        working-directory: ./MyApp
-        run: npm run ui:build
-
-      # Publish .NET Project, generate static content in wwwroot
-      - name: Publish dotnet project
-        working-directory: ./MyApp
-        run: |
-          dotnet publish -c Release /p:DEPLOY_API=${{ secrets.DEPLOY_API }} /p:DEPLOY_CDN=${{ secrets.DEPLOY_CDN }} /p:APP_TASKS=prerender
-
-      # Deploy UI to GitHub Pages
-      - name: Deploy to GitHub Pages
-        env:
-          deploy_cdn: ${{ secrets.DEPLOY_CDN }}
-        if: ${{ env.deploy_cdn != '' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./MyApp/bin/Release/net6.0/publish/wwwroot
-          user_name: 'GitHub Action'
-          user_email: 'action@github.com'
-
   deploy_via_ssh:
     needs: push_to_registry
     runs-on: ubuntu-22.04
