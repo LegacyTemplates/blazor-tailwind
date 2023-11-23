@@ -92,6 +92,22 @@ jobs:
             echo "Skipping CI prebuild"
           fi
 
+      # Setup node.js
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      
+      # Install npm packages
+      - name: Install NPM packages
+        working-directory: ./MyApp
+        run: npm install
+        
+      # Run NPM ui:build
+      - name: Run NPM ui:build
+        working-directory: ./MyApp
+        run: npm run ui:build
+
       # Publish .NET Project, generate static content in wwwroot
       - name: Publish dotnet project
         working-directory: ./MyApp
